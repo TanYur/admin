@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 export default class Editor extends Component {
     constructor() {
@@ -19,29 +19,40 @@ export default class Editor extends Component {
     loadPageList() {
         axios
             .get("./api")
-            .then(res => this.setState({ pageList: res.data }))
+            .then(res => this.setState({pageList: res.data}))
     }
 
     createNewPage() {
         axios
-            .post('./api/createNewPage.php', { "name": this.state.newPageName })
+            .post("./api/createNewPage.php", {"name": this.state.newPageName})
             .then(this.loadPageList())
-            .catch(() =>  alert("Страница уже существует!"))
+            .catch(() => alert("Страница уже существует!"));
     }
 
+    deletePage(page) {
+        axios
+            .post("./api/deletePage.php", {"name": page})
+            .then(this.loadPageList())
+            .catch(() => alert("Страницы не существует!"));
+    }
 
     render() {
-        const { pageList } = this.state;
+        const {pageList} = this.state;
         const pages = pageList.map((page, i) => {
             return (
-                <h1 key={i}>{page}</h1>
+                <h1 key={i}>{page}
+                    <a 
+                    href="#"
+                    onClick={() => this.deletePage(page)}>(x)</a>
+                </h1>
             )
-        })
+        });
+
         return (
             <>
                 <input
-                    onChange={(e) => { this.setState({ newPageName: e.target.value }) }}
-                    type='text' />
+                    onChange={(e) => {this.setState({newPageName: e.target.value})}} 
+                    type="text"/>
                 <button onClick={this.createNewPage}>Создать страницу</button>
                 {pages}
             </>

@@ -3,7 +3,7 @@ const webpack = require("webpack-stream");
 const sass = require('gulp-sass')(require('sass'));
 
 
-const dist = "/MAMP/htdocs/admin/admin";
+const dist = "/MAMP/htdocs/react-admin/admin";
 
 gulp.task('copy-html', () => {
     return gulp.src("./app/src/index.html")
